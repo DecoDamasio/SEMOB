@@ -8,21 +8,16 @@ class OperacaoPage extends StatelessWidget {
     return Container(
       color: const Color(0xFFF1F5F9),
       child: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _cabecalho(),
-
             const SizedBox(height: 20),
-
             _cardsResumo(),
-
             const SizedBox(height: 20),
-
             _tabelaLinhas(),
-
             const SizedBox(height: 26),
-
             _rodape(),
           ],
         ),
@@ -43,9 +38,7 @@ class OperacaoPage extends StatelessWidget {
             letterSpacing: 0.3,
           ),
         ),
-
         const SizedBox(height: 5),
-
         const Text(
           'Operação',
           style: TextStyle(
@@ -54,9 +47,7 @@ class OperacaoPage extends StatelessWidget {
             color: Color(0xFF071A33),
           ),
         ),
-
         const SizedBox(height: 4),
-
         const Text(
           'Situação das linhas, veículos e viagens programadas para hoje.',
           style: TextStyle(
@@ -64,9 +55,7 @@ class OperacaoPage extends StatelessWidget {
             color: Color(0xFF60738F),
           ),
         ),
-
         const SizedBox(height: 20),
-
         Container(
           height: 1,
           color: const Color(0xFFD0DAE6),
@@ -78,17 +67,17 @@ class OperacaoPage extends StatelessWidget {
   Widget _cardsResumo() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final largura = (constraints.maxWidth - 45) / 4;
-
         if (constraints.maxWidth < 900) {
+          final largura = constraints.maxWidth > 600
+              ? (constraints.maxWidth - 15) / 2
+              : constraints.maxWidth;
+
           return Wrap(
             spacing: 15,
             runSpacing: 15,
             children: [
               _cardResumo(
-                largura: constraints.maxWidth > 600
-                    ? (constraints.maxWidth - 15) / 2
-                    : constraints.maxWidth,
+                largura: largura,
                 icone: Icons.directions_bus_outlined,
                 cor: const Color(0xFFEAF2FF),
                 corIcone: const Color(0xFF1554C0),
@@ -97,9 +86,7 @@ class OperacaoPage extends StatelessWidget {
                 descricao: 'de 42 disponíveis',
               ),
               _cardResumo(
-                largura: constraints.maxWidth > 600
-                    ? (constraints.maxWidth - 15) / 2
-                    : constraints.maxWidth,
+                largura: largura,
                 icone: Icons.directions_bus_outlined,
                 cor: const Color(0xFFEAF9F2),
                 corIcone: const Color(0xFF079455),
@@ -108,9 +95,7 @@ class OperacaoPage extends StatelessWidget {
                 descricao: '90% das programadas',
               ),
               _cardResumo(
-                largura: constraints.maxWidth > 600
-                    ? (constraints.maxWidth - 15) / 2
-                    : constraints.maxWidth,
+                largura: largura,
                 icone: Icons.access_time,
                 cor: const Color(0xFFFFF8E8),
                 corIcone: const Color(0xFFE68A00),
@@ -119,9 +104,7 @@ class OperacaoPage extends StatelessWidget {
                 descricao: 'meta municipal: 95%',
               ),
               _cardResumo(
-                largura: constraints.maxWidth > 600
-                    ? (constraints.maxWidth - 15) / 2
-                    : constraints.maxWidth,
+                largura: largura,
                 icone: Icons.warning_amber_outlined,
                 cor: const Color(0xFFFFF0F0),
                 corIcone: const Color(0xFFE31B23),
@@ -132,6 +115,8 @@ class OperacaoPage extends StatelessWidget {
             ],
           );
         }
+
+        final largura = (constraints.maxWidth - 45) / 4;
 
         return Row(
           children: [
@@ -234,9 +219,7 @@ class OperacaoPage extends StatelessWidget {
               color: corIcone,
             ),
           ),
-
           const SizedBox(height: 12),
-
           Text(
             titulo,
             style: const TextStyle(
@@ -244,9 +227,7 @@ class OperacaoPage extends StatelessWidget {
               color: Color(0xFF536783),
             ),
           ),
-
           const SizedBox(height: 4),
-
           Text(
             valor,
             style: const TextStyle(
@@ -255,9 +236,7 @@ class OperacaoPage extends StatelessWidget {
               color: Color(0xFF071A33),
             ),
           ),
-
           const SizedBox(height: 3),
-
           Text(
             descricao,
             style: const TextStyle(
@@ -331,16 +310,23 @@ class OperacaoPage extends StatelessWidget {
       child: Column(
         children: [
           _cabecalhoTabela(),
-
           const Divider(
             height: 1,
             color: Color(0xFFDCE4ED),
           ),
-
-          _cabecalhoColunas(),
-
-          ...linhas.map(
-            (linha) => _linhaTabela(linha),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: 900,
+              child: Column(
+                children: [
+                  _cabecalhoColunas(),
+                  ...linhas.map(
+                    (linha) => _linhaTabela(linha),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -375,7 +361,6 @@ class OperacaoPage extends StatelessWidget {
               ],
             ),
           ),
-
           Container(
             height: 32,
             decoration: BoxDecoration(
@@ -413,8 +398,9 @@ class OperacaoPage extends StatelessWidget {
           color: selecionado
               ? const Color(0xFF1554C0)
               : const Color(0xFF536783),
-          fontWeight:
-              selecionado ? FontWeight.w600 : FontWeight.normal,
+          fontWeight: selecionado
+              ? FontWeight.w600
+              : FontWeight.normal,
         ),
       ),
     );
@@ -428,27 +414,27 @@ class OperacaoPage extends StatelessWidget {
       child: const Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 30,
             child: _TituloColuna('LINHA'),
           ),
           Expanded(
-            flex: 1.4,
+            flex: 14,
             child: _TituloColuna('VEÍCULO'),
           ),
           Expanded(
-            flex: 1.3,
+            flex: 13,
             child: _TituloColuna('VIAGENS'),
           ),
           Expanded(
-            flex: 1.7,
+            flex: 17,
             child: _TituloColuna('PONTUALIDADE'),
           ),
           Expanded(
-            flex: 2,
+            flex: 20,
             child: _TituloColuna('OCUPAÇÃO'),
           ),
           Expanded(
-            flex: 1.7,
+            flex: 17,
             child: _TituloColuna('SITUAÇÃO'),
           ),
         ],
@@ -479,9 +465,9 @@ class OperacaoPage extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 3,
+            flex: 30,
             child: Text(
-              dados['linha'],
+              dados['linha'] as String,
               style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
@@ -489,42 +475,38 @@ class OperacaoPage extends StatelessWidget {
               ),
             ),
           ),
-
           Expanded(
-            flex: 1.4,
+            flex: 14,
             child: Text(
-              dados['veiculo'],
+              dados['veiculo'] as String,
               style: const TextStyle(
                 fontSize: 11,
                 color: Color(0xFF526985),
               ),
             ),
           ),
-
           Expanded(
-            flex: 1.3,
+            flex: 13,
             child: Text(
-              dados['viagens'],
+              dados['viagens'] as String,
               style: const TextStyle(
                 fontSize: 11,
                 color: Color(0xFF526985),
               ),
             ),
           ),
-
           Expanded(
-            flex: 1.7,
+            flex: 17,
             child: Text(
-              dados['pontualidade'],
+              dados['pontualidade'] as String,
               style: const TextStyle(
                 fontSize: 11,
                 color: Color(0xFF526985),
               ),
             ),
           ),
-
           Expanded(
-            flex: 2,
+            flex: 20,
             child: Row(
               children: [
                 Container(
@@ -545,9 +527,7 @@ class OperacaoPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(width: 7),
-
                 Text(
                   '$ocupacao%',
                   style: const TextStyle(
@@ -558,9 +538,8 @@ class OperacaoPage extends StatelessWidget {
               ],
             ),
           ),
-
           Expanded(
-            flex: 1.7,
+            flex: 17,
             child: Align(
               alignment: Alignment.centerLeft,
               child: _status(situacao),

@@ -86,17 +86,8 @@ class _DashboardPageState extends State<DashboardPage> {
     }
 
     if (menuSelecionado == 1) {
-      return const Center(
-  child: Text(
-    'FUNCIONOU A OPERAÇÃO',
-    style: TextStyle(
-      fontSize: 40,
-      color: Colors.red,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-);
-    }
+  return const OperacaoPage();
+}
 
     return Center(
       child: Text(
