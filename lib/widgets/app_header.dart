@@ -83,18 +83,19 @@ class AppHeader extends StatelessWidget {
               ),
             ),
           ),
+          // Faixa do menu, mais escura para se destacar do cabeçalho.
           Container(
-            height: 1,
-            color: Colors.white.withValues(alpha: 0.1),
-          ),
-          _Centralizado(
-            child: SizedBox(
-              height: 46,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: abas.length,
-                separatorBuilder: (_, _) => const SizedBox(width: 6),
-                itemBuilder: (context, index) => _aba(index),
+            color: Cores.primariaEscura,
+            child: _Centralizado(
+              child: SizedBox(
+                height: 60,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: abas.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 8),
+                  itemBuilder: (context, index) =>
+                      Center(child: _aba(index)),
+                ),
               ),
             ),
           ),
@@ -171,33 +172,50 @@ class AppHeader extends StatelessWidget {
   Widget _aba(int index) {
     final aba = abas[index];
     final selecionada = index == abaSelecionada;
-    final cor = selecionada ? Colors.white : const Color(0xFFC9D8EC);
+    final cor = selecionada ? Cores.primaria : Colors.white;
+    final forma = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+      side: BorderSide(
+        color: selecionada
+            ? Colors.white
+            : Colors.white.withValues(alpha: 0.28),
+      ),
+    );
 
-    return InkWell(
-      onTap: () => onSelecionarAba(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: selecionada ? Colors.white : Colors.transparent,
-              width: 3,
+    // Cada aba é um botão: fundo branco na selecionada, contorno nas demais.
+    return Semantics(
+      button: true,
+      selected: selecionada,
+      child: Material(
+        color: selecionada
+            ? Colors.white
+            : Colors.white.withValues(alpha: 0.08),
+        shape: forma,
+        child: InkWell(
+          onTap: () => onSelecionarAba(index),
+          customBorder: forma,
+          hoverColor: selecionada
+              ? Colors.transparent
+              : Colors.white.withValues(alpha: 0.14),
+          child: Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(aba.icone, size: 18, color: cor),
+                const SizedBox(width: 8),
+                Text(
+                  aba.rotulo,
+                  style: TextStyle(
+                    color: cor,
+                    fontSize: 14,
+                    fontWeight: selecionada ? FontWeight.w700 : FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        child: Row(
-          children: [
-            Icon(aba.icone, size: 16, color: cor),
-            const SizedBox(width: 7),
-            Text(
-              aba.rotulo,
-              style: TextStyle(
-                color: cor,
-                fontSize: 13,
-                fontWeight: selecionada ? FontWeight.w700 : FontWeight.w500,
-              ),
-            ),
-          ],
         ),
       ),
     );
