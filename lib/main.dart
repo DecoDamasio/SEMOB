@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'pages/dashboard_page.dart';
-import 'pages/operacao_page.dart';
+import 'pages/home_page.dart';
+import 'theme/tema.dart';
 
 void main() {
   runApp(const SemobApp());
@@ -16,10 +16,10 @@ class SemobApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SEMOB-SCS',
       theme: ThemeData(
-        fontFamily: 'Arial',
-        scaffoldBackgroundColor: const Color(0xFFF5F6F8),
+        colorScheme: ColorScheme.fromSeed(seedColor: Cores.primaria),
+        scaffoldBackgroundColor: Cores.fundo,
       ),
-      home: const DashboardPage(),
+      home: const HomePage(),
     );
   }
 }
